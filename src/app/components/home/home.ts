@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'; // Bejött a HttpHeaders!
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -18,16 +18,16 @@ export class Home implements OnInit {
   }
 
   fetchParties() {
-    // Kiberheljük a tokent a böngészőből
+    // HA A SZERVEREN FUT A KÓD, AZONNAL LÉPJEN KI (Így nem omlik össze a localStorage hiánya miatt)
+    if (typeof window === 'undefined') return;
+
     const token = localStorage.getItem('ravehouse_token');
 
-    // Összerakjuk a fejlécet (ha nincs token, üresen megy, de a Laravel le fogja dobni)
     const headers = new HttpHeaders({
       'Accept': 'application/json',
       'Authorization': `Bearer ${token}`
     });
 
-    // Elküldjük a GET kérést a fejléccel együtt!
     this.http.get('http://localhost:8000/api/events', { headers }).subscribe({
       next: (data: any) => {
         this.parties = data;

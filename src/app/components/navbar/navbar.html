@@ -2,6 +2,26 @@
   <h2 style="margin: 0; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;" routerLink="/">⛓️ RaveHouse</h2>
   <div>
     <a routerLink="/" style="color: white; text-decoration: none; margin-right: 20px; text-transform: uppercase;">Bulik</a>
-    <a routerLink="/login" style="color: #ff4444; text-decoration: none; font-weight: bold; text-transform: uppercase;">Belépés</a>
+    <a routerLink="/shop" style="color: white; text-decoration: none; margin-right: 20px; text-transform: uppercase;">Shop 🛒</a>
+
+    <!-- Ha a felhasználó NINCS bejelentkezve -->
+    @if (!auth.isLoggedIn()) {
+      <a routerLink="/login" style="color: #ff4444; text-decoration: none; font-weight: bold; text-transform: uppercase;">Belépés</a>
+    } @else {
+      
+      <!-- Ha az ADMIN jelentkezett be -->
+      @if (auth.isAdmin()) {
+        <a routerLink="/admin" style="color: #00c851; text-decoration: none; margin-right: 20px; text-transform: uppercase; font-weight: bold;">🛡️ Admin Panel</a>
+      } @else {
+        <!-- Ha SIMA USER jelentkezett be -->
+        <a routerLink="/profile" style="color: #33b5e5; text-decoration: none; margin-right: 20px; text-transform: uppercase; font-weight: bold;">👤 Profilom</a>
+      }
+
+      <!-- Kijelentkezés gomb (minden bejelentkezettnek látszik) -->
+      <button (click)="onLogout()" style="background: none; border: none; color: #ff4444; text-transform: uppercase; font-weight: bold; cursor: pointer; font-size: 16px; padding: 0; font-family: sans-serif;">
+        Kijelentkezés
+      </button>
+
+    }
   </div>
 </nav>
