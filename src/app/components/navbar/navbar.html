@@ -3,11 +3,13 @@
   <div>
     <a routerLink="/" style="color: white; text-decoration: none; margin-right: 20px; text-transform: uppercase;">Bulik</a>
     <a routerLink="/shop" style="color: white; text-decoration: none; margin-right: 20px; text-transform: uppercase;">Shop 🛒</a>
+    
 
-    <!-- Ha a felhasználó NINCS bejelentkezve -->
+   
     @if (!auth.isLoggedIn()) {
-      <a routerLink="/login" style="color: #ff4444; text-decoration: none; font-weight: bold; text-transform: uppercase;">Belépés</a>
-    } @else {
+  <a routerLink="/login" style="color: white; text-decoration: none; margin-right: 20px; text-transform: uppercase;">Belépés</a>
+  <a routerLink="/register" style="color: #ff4444; text-decoration: none; font-weight: bold; text-transform: uppercase;">Regisztráció</a>
+} @else {
       
       <!-- Ha az ADMIN jelentkezett be -->
       @if (auth.isAdmin()) {

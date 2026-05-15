@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Auth } from '../../auth'; // Két szintet lépünk vissza (../../auth)
+import { Auth } from '../../auth';
 
 @Component({
   selector: 'app-login',
@@ -16,34 +16,32 @@ export class Login {
   password = '';
   errorMessage = '';
 
-  // A constructorban a te rövid Auth osztályodat kérjük be
   constructor(private http: HttpClient, private router: Router, private auth: Auth) {}
 
   onLogin() {
+    this.errorMessage = '';
     const loginData = { email: this.email, password: this.password };
 
     this.http.post('http://localhost:8000/api/login', loginData).subscribe({
       next: (response: any) => {
         const token = response.access_token;
+        
+       
+        const isAdmin = response.roles && response.roles.includes('admin');
+        const role = isAdmin ? 'admin' : 'user';
 
-        const headers = { 'Authorization': `Bearer ${token}` };
-        this.http.get('http://localhost:8000/api/me', { headers }).subscribe({
-          next: (meResponse: any) => {
-            const isAdmin = meResponse.roles.includes('admin');
-            const role = isAdmin ? 'admin' : 'user';
+        this.auth.login(token, role);
 
-            this.auth.login(token, role);
-
-            if (isAdmin) {
-              this.router.navigate(['/admin']);
-            } else {
-              this.router.navigate(['/profile']);
-            }
-          }
-        });
+       
+        if (isAdmin) {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/profile']);
+        }
       },
       error: (err) => {
-        this.errorMessage = 'Hibás email vagy jelszó!';
+        
+        this.errorMessage = err.error?.message || 'Hibás email vagy jelszó!';
       }
     });
   }
