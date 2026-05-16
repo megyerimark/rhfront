@@ -1,1 +1,165 @@
-<p>admin works!</p>
+<div class="rh-admin-wrapper">
+  
+  <div class="admin-header">
+    <h2>🛡️ KÖZPONTI VEZÉRLŐPULT</h2>
+    <p>Rendszer hozzáférés: <span class="neon-text">ENGEDÉLYEZVE</span></p>
+  </div>
+
+  <div class="admin-navbar">
+    <button class="nav-item" [class.active]="activeTab === 'dashboard'" (click)="activeTab = 'dashboard'">
+      📊 FELHASZNÁLÓK & STATISZTIKÁK
+    </button>
+    <button class="nav-item" [class.active]="activeTab === 'events'" (click)="activeTab = 'events'">
+      ⚡ ESEMÉNY GENERÁTOR
+    </button>
+    <button class="nav-item" [class.active]="activeTab === 'shop'" (click)="activeTab = 'shop'">
+      🛠️ ARZENÁL BOLT MANAGING
+    </button>
+  </div>
+
+  @if (activeTab === 'dashboard') {
+    <div class="admin-page-content">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-title">Összes Regisztrált</div>
+          <div class="stat-value neon-cyan">{{ totalUsers }}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Aktivált Fiókok</div>
+          <div class="stat-value neon-green">{{ verifiedUsers }}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Rendszergazdák</div>
+          <div class="stat-value neon-gold">{{ adminCount }}</div>
+        </div>
+      </div>
+
+      <div class="search-panel">
+        <label>🖧 Adatbázis Keresés (Név / Email):</label>
+        <input type="text" [(ngModel)]="searchQuery" (input)="onSearch()" class="rh-search-input" placeholder="Kifejezés beírása...">
+      </div>
+
+      <div class="table-container">
+        <table class="rh-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Név</th>
+              <th>Email</th>
+              <th>Státusz</th>
+              <th>Regisztráció</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of filteredUsers; track user.id) {
+              <tr>
+                <td class="neon-cyan">#{{ user.id }}</td>
+                <td style="font-weight: bold;">{{ user.name }}</td>
+                <td style="color: #b0b0b5;">{{ user.email }}</td>
+                <td>
+                  @if (user.email_verified_at) {
+                    <span class="badge badge-success">Aktiválva</span>
+                  } @else {
+                    <span class="badge badge-error">Függőben</span>
+                  }
+                </td>
+                <td style="font-size: 12px; color: #777;">{{ user.created_at | date:'yyyy. MM. dd. HH:mm' }}</td>
+              </tr>
+            }
+            @if (filteredUsers.length === 0) {
+              <tr>
+                <td colspan="5" class="empty-state">⚠️ Nincs adatbázis találat.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  @if (activeTab === 'events') {
+    <div class="admin-split-layout">
+      
+      <div class="system-operations-panel">
+        <h3>⚡ ÚJ ESEMÉNY GENERÁTOR</h3>
+        <p class="op-desc">Írd be a buli adatait a központi adatbázisba.</p>
+        
+        <form (ngSubmit)="onCreateEvent()" class="event-form-grid">
+          <div class="form-group">
+            <label>Buli Megnevezése</label>
+            <input type="text" name="title" [(ngModel)]="newEvent.title" required class="rh-search-input" placeholder="pl. Industrial Techno Night Vol. 1">
+          </div>
+
+          <div class="form-group-row">
+            <div class="form-group">
+              <label>Dátum</label>
+              <input type="date" name="date" [(ngModel)]="newEvent.date" required class="rh-search-input">
+            </div>
+            <div class="form-group">
+              <label>Kezdés (Időpont)</label>
+              <input type="time" name="time" [(ngModel)]="newEvent.time" required class="rh-search-input">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Beágyazott Média URL (SoundCloud / YouTube)</label>
+            <input type="url" name="embedded_media_url" [(ngModel)]="newEvent.embedded_media_url" class="rh-search-input" placeholder="https://soundcloud.com/...">
+          </div>
+
+          <div class="form-group">
+            <label>Leírás / Line-up</label>
+            <textarea name="description" [(ngModel)]="newEvent.description" rows="3" class="rh-search-input" placeholder="Brutális lábdobok..."></textarea>
+          </div>
+
+          <button type="submit" class="mech-btn-success" [disabled]="loading">
+            {{ loading ? '⚙️ MENTÉS AZ ADATBÁZISBA...' : '⚡ ESEMÉNY ÉLESÍTÉSE' }}
+          </button>
+        </form>
+
+        @if (message) {
+          <div class="system-alert alert-cyan">{{ message }}</div>
+        }
+      </div>
+
+      <div class="live-monitor-panel">
+        <h3>📡 ADATBÁZIS MONITOR // AKTÍV BULIK</h3>
+        <p class="op-desc">A rendszerben jelenleg rögzített hivatalos események.</p>
+        
+        <div class="monitor-list">
+          @for (event of events; track event.id) {
+            <div class="monitor-card animate-flash-entry">
+              <div class="m-card-header">
+                <span class="m-id">#{{ event.id }}</span>
+                <span class="m-date">📅 {{ event.event_date | date:'yyyy. MM. dd. HH:mm' }}</span>
+              </div>
+              <h4 class="m-title">{{ event.title }}</h4>
+              @if (event.embedded_media_url) {
+                <span class="m-badge">🎵 SZETT CSATOLVA</span>
+              }
+            </div>
+          } @empty {
+            <div class="monitor-empty">
+              <p>⚠️ A REKTOR ÜRES</p>
+              <span>Nincs aktív jel az adatbázisban.</span>
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+  }
+
+  @if (activeTab === 'shop') {
+    <div class="admin-page-content">
+      <div class="shop-management-placeholder">
+        <h3>🛠️ ARZENÁL GEAR SHOP GENERÁTOR</h3>
+        <p class="op-desc">Ezen a felületen tudsz majd új tárgyakat hozzáadni a bolthoz.</p>
+        <div class="gear-construction-box">
+          <span class="noise-text">⚠️ RENDSZER FEJLESZTÉS ALATT</span>
+          <p>A fogaskerekes "Gears" pontrendszer modulja csatlakozásra vár...</p>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>
