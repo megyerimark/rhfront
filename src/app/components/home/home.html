@@ -4,10 +4,9 @@
     ⚡ Közelgő Rave-ek ⚡
   </h1>
 
-  <!-- Bulik rácsos elrendezése (Grid) -->
   <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;">
     
-    <!-- Az Angular új, szupergyors cikluskezelője -->
+  
     @for (party of parties; track party.id) {
       <div style="background-color: #151515; border: 1px solid #222; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: 0.3s;">
         
@@ -38,7 +37,6 @@
 
       </div>
     } @empty {
-      <!-- Ez jelenik meg, ha a tömbünk még teljesen üres -->
       <div style="grid-column: 1 / -1; text-align: center; color: #666; padding: 60px; font-style: italic; border: 1px dashed #222; border-radius: 8px;">
         Jelenleg nincsenek aktív bulik a rendszerben... Csinálj egyet a backendről!
       </div>

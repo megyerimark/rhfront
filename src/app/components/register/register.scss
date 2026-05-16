@@ -1,0 +1,192 @@
+// --- MECHANIZED WEB / CYBERPUNK SZÍNVÁLTOZÓK ---
+$metal-dark: #121417;        // Alap gépház sötét
+$metal-panel: #23272b;       // Kártya fém lemez színe
+$metal-edge: #4a5057;        // Világosabb fém él (kopás)
+$rust-shadow: #2a1e17;       // Olajos, rozsdás beütésű árnyék
+$brass-gold: #b59045;        // Tompa réz/arany a gombokhoz
+
+$neon-cyan: #00f3ff;         // Plazma kék (kijelzőkhöz)
+$neon-purple: #a200ff;       // Kábel lila (hover effektekhez)
+$neon-red: #ff2a2a;          // Hiba piros
+$neon-green: #00ff66;        // Siker zöld
+
+// --- ALAP BEÁLLÍTÁSOK ---
+.rh-auth-wrapper {
+  background-color: #050506; // Külvilág (nagyon sötét)
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  // Opcionális: Ha van egy halvány indusztriális háttérképed, ide beteheted
+  // background-image: url('assets/img/factory-bg.jpg');
+  // background-size: cover;
+}
+
+// --- FÉM KÁRTYA (A fő panel) ---
+.auth-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 40px;
+  border-radius: 6px;
+  
+  // A fém textúra és a 3D hatás
+  background: linear-gradient(135deg, $metal-panel 0%, $metal-dark 100%);
+  border: 2px solid $metal-edge;
+  border-bottom: 4px solid darken($metal-dark, 10%); // Vastagabb fém alul
+  
+  // Rozsdás/olajos belső árnyék és egy kis neon derítés kívül
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.9), 
+    inset 0 0 40px $rust-shadow,
+    0 0 10px rgba($neon-cyan, 0.1); 
+
+  font-family: 'Courier New', Courier, monospace; // Műszerfalas font
+
+  // "Szegecsek" a sarkokba (CSS trükk)
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #111;
+    border: 1px solid $metal-edge;
+    border-radius: 50%;
+    box-shadow: inset 0 2px 2px rgba(255,255,255,0.2);
+  }
+  &::before { top: 15px; left: 15px; } // Bal felső szegecs
+  &::after { top: 15px; right: 15px; } // Jobb felső szegecs
+}
+
+// --- CÍMSOR ---
+.auth-title {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 35px;
+  font-weight: bold;
+  font-family: sans-serif;
+  
+  // Arany/Réz fém hatás a szövegen
+  background: linear-gradient(to bottom, #fde29e 0%, $brass-gold 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+}
+
+// --- RENDSZERÜZENETEK (Alerts) ---
+.alert {
+  padding: 12px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-left: 4px solid; // Oldalsó vastag csík
+  background: #000;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+  
+  &-error {
+    color: $neon-red;
+    border-color: $neon-red;
+    text-shadow: 0 0 5px rgba($neon-red, 0.5);
+  }
+  
+  &-success {
+    color: $neon-green;
+    border-color: $neon-green;
+    text-shadow: 0 0 5px rgba($neon-green, 0.5);
+  }
+}
+
+// --- BEVITELI MEZŐK (Kijelző hatás) ---
+.form-group {
+  margin-bottom: 25px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: darken($neon-cyan, 20%); // Halványabb plazma szín
+    letter-spacing: 2px;
+    font-weight: bold;
+  }
+}
+
+.rh-input {
+  width: 100%;
+  padding: 14px;
+  // Nagyon sötét, "kikapcsolt képernyő" szín
+  background-color: #0a0d10; 
+  border: 1px solid #1a3236; // Tompa kékes/zöldes fém
+  border-radius: 3px;
+  color: $neon-cyan; // A beírt szöveg neon kék!
+  font-size: 16px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  box-sizing: border-box;
+  
+  // Süllyesztett panel hatás
+  box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.9);
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $neon-cyan;
+    // Amikor belekattint, felizzik a neon fény
+    box-shadow: 
+      inset 0 2px 10px rgba(0, 0, 0, 0.9), 
+      0 0 12px rgba($neon-cyan, 0.3),
+      inset 0 0 8px rgba($neon-cyan, 0.2);
+  }
+
+  // Automatikus kitöltés (Chrome sárga hátterének felülírása)
+  &:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px #0a0d10 inset !important;
+    -webkit-text-fill-color: $neon-cyan !important;
+  }
+}
+
+// --- FÉM GOMB (Energizált hatás) ---
+.rh-btn {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  font-family: sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 16px;
+  color: #000;
+  cursor: pointer;
+  border-radius: 4px;
+  
+  // Acél/Réz gomb alapállapot
+  background: linear-gradient(180deg, #d4d4d4 0%, #8a8a8a 100%);
+  border: 2px solid #fff;
+  border-bottom: 4px solid #555;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    // Hover-re "túláramot" kap: Arany+Lila fény
+    background: linear-gradient(180deg, lighten($brass-gold, 15%) 0%, $brass-gold 100%);
+    border-color: $brass-gold;
+    border-bottom-color: darken($brass-gold, 20%);
+    box-shadow: 
+      0 6px 20px rgba(0, 0, 0, 0.8),
+      0 0 20px rgba($neon-purple, 0.6); // Kábel lila ragyogás
+    color: #111;
+  }
+  
+  &:active {
+    // Kattintáskor a gomb benyomódik
+    transform: translateY(3px);
+    border-bottom-width: 2px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba($neon-purple, 0.4);
+  }
+}

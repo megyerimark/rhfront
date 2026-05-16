@@ -1,0 +1,164 @@
+// --- IPARI ÉS PLAZMA SZÍNVÁLTOZÓK ---
+$metal-bg: #15171a;          // Fő panel háttere
+$metal-panel: #23272b;       // Gombok háttere
+$metal-border: #4a5057;      // Gombok acél pereme
+$gold-text: #b59045;         // Arany felirat
+$neon-cyan: #00f3ff;         // Plazma kék (villám)
+$neon-purple: #a200ff;       // Elektromos lila
+$neon-red: #ff2a2a;
+$neon-green: #00ff66;
+
+// --- A FŐ VEZÉRLŐPULT (Navbar) ---
+.rh-mech-navbar {
+  background: linear-gradient(180deg, lighten($metal-bg, 8%) 0%, $metal-bg 100%);
+  border-bottom: 3px solid #111;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.9), 
+    inset 0 -2px 0 $metal-border; // Fémlemez vastagság
+  padding: 10px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+// --- LOGÓ ÉS VILLÁM EFFEKT ---
+.brand-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  text-decoration: none;
+
+  .logo-wrapper {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    // A logód maga (ha átlátszó PNG, zseniálisan fog kinézni)
+    .brand-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      z-index: 2; // Ez van legfelül
+      filter: drop-shadow(0 0 5px rgba(0,0,0,0.8));
+    }
+
+    // A lüktető plazma villám-gyűrű a logó mögött
+    .lightning-ring {
+      position: absolute;
+      width: 110%;
+      height: 110%;
+      border-radius: 50%;
+      background: transparent;
+      z-index: 1;
+      animation: plasma-storm 2s infinite alternate; // Mozgó effekt!
+    }
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+      margin: 0;
+      color: $gold-text;
+      font-family: 'Arial', sans-serif;
+      text-transform: uppercase;
+      font-weight: 900;
+      letter-spacing: 2px;
+      font-size: 22px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+    }
+
+    .subtitle {
+      color: $metal-border;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+  }
+}
+
+// --- VILLÁM ANIMÁCIÓ (Pislákolás és izzás) ---
+@keyframes plasma-storm {
+  0% {
+    box-shadow: 0 0 10px $neon-cyan, inset 0 0 10px $neon-cyan;
+    opacity: 0.6;
+  }
+  20% { // Hirtelen villanás
+    box-shadow: 0 0 25px $neon-cyan, 0 0 40px $neon-purple, inset 0 0 20px $neon-cyan;
+    opacity: 1;
+  }
+  30% { opacity: 0.5; }
+  100% {
+    box-shadow: 0 0 15px $neon-cyan, 0 0 20px rgba($neon-purple, 0.5);
+    opacity: 0.8;
+  }
+}
+
+// --- GOMBOK (Süllyesztett Fém Panelek) ---
+.nav-menu {
+  display: flex;
+  gap: 12px;
+
+  .mech-btn {
+    background: linear-gradient(180deg, #33383e 0%, $metal-panel 100%);
+    border: 2px solid #5a6068;
+    border-top-color: #7a828c; // Fentről kapja a fényt
+    border-radius: 4px;
+    color: #b0b0b5;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 1px;
+    padding: 8px 16px;
+    text-decoration: none;
+    cursor: pointer;
+    // Süllyesztett 3D hatás a gomb belsejében
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.9), 0 4px 6px rgba(0,0,0,0.6);
+    transition: all 0.2s ease;
+    font-family: 'Arial', sans-serif;
+
+    &:hover {
+      color: #fff;
+      background: linear-gradient(180deg, lighten(#33383e, 10%) 0%, lighten($metal-panel, 5%) 100%);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.9), 0 0 10px rgba(255,255,255,0.2);
+    }
+
+    &:active {
+      transform: translateY(2px);
+      box-shadow: inset 0 4px 15px rgba(0,0,0,0.9);
+      border-top-color: #33383e;
+    }
+  }
+
+  // --- SPECIFIKUS NEON IZZÁSOK HOVER-RE ---
+  .glow-cyan:hover {
+    border-color: $neon-cyan;
+    color: $neon-cyan;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.9), 0 0 15px rgba($neon-cyan, 0.5);
+  }
+
+  .glow-gold:hover {
+    border-color: lighten($gold-text, 20%);
+    color: lighten($gold-text, 20%);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.9), 0 0 15px rgba($gold-text, 0.5);
+  }
+
+  .glow-red:hover {
+    border-color: $neon-red;
+    color: $neon-red;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.9), 0 0 15px rgba($neon-red, 0.5);
+  }
+
+  .glow-green:hover {
+    border-color: $neon-green;
+    color: $neon-green;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.9), 0 0 15px rgba($neon-green, 0.5);
+  }
+}
