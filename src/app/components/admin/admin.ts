@@ -24,6 +24,7 @@ export class Admin implements OnInit {
   users: any[] = [];
   filteredUsers: any[] = [];
   events: any[] = []; 
+  shopItems: any[] = []; // <-- Ide jönnek a bolti cuccok
   searchQuery: string = '';
 
   // Statisztikák
@@ -42,6 +43,17 @@ export class Admin implements OnInit {
     embedded_media_url: ''
   };
 
+  // Shop generátor adatai
+  isShopLoading = false;
+  shopMessage = '';
+  newShopItem = {
+    name: '',
+    category: 'headgear', 
+    price: 100, 
+    image_url: '',
+    description: ''
+  };
+
   constructor() {}
 
   ngOnInit() {
@@ -51,6 +63,7 @@ export class Admin implements OnInit {
     }
     this.fetchUsers();
     this.fetchEvents(); 
+    this.fetchShopItems(); // <-- 🚨 Induláskor lekérjük a raktárkészletet!
   }
 
   fetchUsers() {
@@ -74,6 +87,23 @@ export class Admin implements OnInit {
         this.events = res;
       },
       error: (err) => console.error('Hiba a bulik letöltésekor:', err)
+    });
+  }
+
+  // --- 🚨 ÚJ: BOLTI TÁRGYAK LEKÉRÉSE ---
+  fetchShopItems() {
+    if (typeof window === 'undefined') return; 
+    
+    // 1. Elővesszük a VIP belépőkártyát a zsebünkből
+    const token = localStorage.getItem('ravehouse_token'); 
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    // 2. Felmutatjuk a szervernek a { headers } csomaggal
+    this.http.get('http://localhost:8000/api/shop-items', { headers }).subscribe({
+      next: (res: any) => {
+        this.shopItems = res;
+      },
+      error: (err) => console.error('Hiba a bolti tárgyak letöltésekor:', err)
     });
   }
 
@@ -107,6 +137,32 @@ export class Admin implements OnInit {
       error: (err) => {
         this.loading = false;
         this.message = '⚠️ RENDSZERHIBA: A PLAZMAHÁLÓZAT MEGSZAKADT. ELLENŐRIZD A MEZŐKET!';
+        console.error(err);
+      }
+    });
+  }
+
+  onCreateShopItem() {
+    if (typeof window === 'undefined') return;
+    this.isShopLoading = true;
+    this.shopMessage = '';
+
+    const token = localStorage.getItem('ravehouse_token'); 
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.post('http://localhost:8000/api/shop-items', this.newShopItem, { headers }).subscribe({
+      next: (res: any) => {
+        this.isShopLoading = false;
+        this.shopMessage = '»» ÚJ FELSZERELÉS A BOLTBAN // TÁRGY SIKERESEN SZINTETIZÁLVA! ⚙️👕';
+        
+        this.newShopItem = { name: '', category: 'headgear', price: 100, image_url: '', description: '' };
+        
+        // 🚨 REFRISSÍTÉS: A sikeres mentés után azonnal újraolvassuk a szervert!
+        this.fetchShopItems();
+      },
+      error: (err) => {
+        this.isShopLoading = false;
+        this.shopMessage = '⚠️ RENDSZERHIBA: A TÁRGY GENERÁLÁSA SIKERTELEN!';
         console.error(err);
       }
     });

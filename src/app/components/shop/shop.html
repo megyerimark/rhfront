@@ -1,0 +1,59 @@
+<div class="shop-wrapper">
+  
+  <div class="shop-header">
+    <div class="header-titles">
+      <h2>🛠️ ARZENÁL GEAR SHOP</h2>
+      <p>Költsd el a RaveCoinjaidat exkluzív felszerelésekre!</p>
+    </div>
+    
+    <div class="balance-card">
+      <span class="b-label">EGYENLEG:</span>
+      <span class="b-amount">{{ userBalance }} 🪙</span>
+    </div>
+  </div>
+
+  @if (message) {
+    <div class="system-alert" [class.alert-success]="!isError" [class.alert-error]="isError">
+      {{ message }}
+    </div>
+  }
+
+  <div class="shop-grid">
+    @for (item of shopItems; track item.id) {
+      <div class="shop-card">
+        
+        <div class="card-image-box">
+          <span class="category-tag">{{ item.category | uppercase }}</span>
+          @if (item.image_url) {
+            <img [src]="item.image_url" [alt]="item.name">
+          } @else {
+            <div class="no-image-placeholder">⚙️</div>
+          }
+        </div>
+
+        <div class="card-info">
+          <h3 class="item-name">{{ item.name }}</h3>
+          <p class="item-desc">{{ item.description || 'Nincs leírás...' }}</p>
+          
+          <div class="card-footer">
+            <span class="item-price">{{ item.price }} 🪙</span>
+            
+            <button 
+              class="mech-btn-buy" 
+              (click)="buyItem(item.id)" 
+              [disabled]="loadingId === item.id || userBalance < item.price">
+              {{ loadingId === item.id ? 'TRANZAKCIÓ...' : 'VÁSÁRLÁS' }}
+            </button>
+          </div>
+        </div>
+
+      </div>
+    } @empty {
+      <div class="empty-shop">
+        <h3>A BOLT JELENLEG ÜRES</h3>
+        <p>A Rendszergazda még nem töltött fel új felszereléseket.</p>
+      </div>
+    }
+  </div>
+
+</div>

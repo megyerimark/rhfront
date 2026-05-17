@@ -6,6 +6,7 @@ import { Profile } from './components/profile/profile';
 //import { Shop } from './components/shop/shop';
 import { Register } from './components/register/register';
 import { Verify } from './components/verify/verify';
+import { Shop } from './components/shop/shop';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { path: 'profile', component: Profile }, 
 { path: 'register', component: Register },
 { path: 'email/verify/:id/:hash', component: Verify },
+{ path: 'shop', component: Shop },
 
 
 

@@ -1,0 +1,86 @@
+$metal-bg: #0a0c0f;
+$metal-panel: #16191d;
+$metal-border: #2c3239;
+$coin-gold: #e8c96b;
+$neon-cyan: #00f3ff;
+$neon-red: #ff2a2a;
+
+.shop-wrapper {
+  background: $metal-bg; min-height: 90vh; padding: 40px; color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.shop-header {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 2px solid $metal-border; padding-bottom: 20px; margin-bottom: 30px;
+  flex-wrap: wrap; gap: 20px;
+
+  h2 { color: $coin-gold; letter-spacing: 3px; margin: 0 0 5px 0; text-shadow: 0 0 10px rgba($coin-gold, 0.4); }
+  p { color: #888; font-size: 14px; margin: 0; }
+}
+
+.balance-card {
+  background: #0f1115; border: 1px solid $coin-gold; padding: 15px 25px; border-radius: 4px;
+  box-shadow: inset 0 0 15px rgba($coin-gold, 0.1), 0 0 15px rgba($coin-gold, 0.2);
+  
+  .b-label { color: #888; font-weight: bold; font-size: 12px; margin-right: 10px; }
+  .b-amount { color: $coin-gold; font-size: 24px; font-weight: 900; text-shadow: 0 0 10px $coin-gold; }
+}
+
+.system-alert {
+  padding: 15px; border-radius: 4px; margin-bottom: 30px; font-weight: bold; text-align: center; letter-spacing: 1px;
+  &.alert-success { background: rgba($coin-gold, 0.1); border: 1px solid $coin-gold; color: $coin-gold; box-shadow: 0 0 15px rgba($coin-gold, 0.2); }
+  &.alert-error { background: rgba($neon-red, 0.1); border: 1px solid $neon-red; color: $neon-red; box-shadow: 0 0 15px rgba($neon-red, 0.2); }
+}
+
+.shop-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;
+}
+
+.shop-card {
+  background: $metal-panel; border: 1px solid $metal-border; border-radius: 4px; overflow: hidden;
+  transition: all 0.3s ease; display: flex; flex-direction: column;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+
+  &:hover { border-color: $coin-gold; transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 15px rgba($coin-gold, 0.2); }
+}
+
+.card-image-box {
+  height: 180px; background: #050608; position: relative; border-bottom: 1px solid $metal-border;
+  display: flex; justify-content: center; align-items: center; overflow: hidden;
+
+  .category-tag {
+    position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); border: 1px solid $coin-gold;
+    color: $coin-gold; font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 2px;
+  }
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+  .no-image-placeholder { font-size: 50px; opacity: 0.3; }
+}
+
+.card-info {
+  padding: 20px; display: flex; flex-direction: column; flex: 1;
+
+  .item-name { margin: 0 0 10px 0; color: #fff; font-family: sans-serif; font-size: 18px; }
+  .item-desc { color: #888; font-size: 12px; margin: 0 0 20px 0; flex: 1; }
+}
+
+.card-footer {
+  display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;
+
+  .item-price { color: $coin-gold; font-size: 18px; font-weight: 900; }
+}
+
+.mech-btn-buy {
+  background: linear-gradient(180deg, #b59045 0%, #7a5e27 100%); border: 2px solid #e8c96b; border-bottom: 4px solid #4a3814;
+  border-radius: 4px; color: #000; font-weight: bold; font-size: 12px; padding: 10px 15px; cursor: pointer; transition: all 0.2s;
+
+  &:hover:not(:disabled) { background: linear-gradient(180deg, #d4b065 0%, #9e7a33 100%); box-shadow: 0 0 15px rgba($coin-gold, 0.5); }
+  &:disabled { opacity: 0.3; cursor: not-allowed; color: #fff; filter: grayscale(100%); }
+}
+
+.empty-shop {
+  grid-column: 1 / -1; text-align: center; padding: 60px; background: rgba(255,255,255,0.02); border: 1px dashed $metal-border;
+  h3 { color: $coin-gold; letter-spacing: 2px; }
+  p { color: #666; }
+}

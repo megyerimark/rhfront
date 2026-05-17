@@ -1,0 +1,106 @@
+$metal-bg: #0a0c0f;
+$metal-panel: #16191d;
+$metal-border: #2c3239;
+$neon-cyan: #00f3ff;
+$neon-green: #00ff66;
+$neon-red: #ff2a2a;
+$neon-gold: #b59045;
+
+.fitting-room-wrapper {
+  background: $metal-bg;
+  min-height: 90vh;
+  padding: 40px;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.room-header {
+  text-align: center; margin-bottom: 30px;
+  h2 { color: $neon-cyan; letter-spacing: 4px; text-shadow: 0 0 10px rgba($neon-cyan, 0.4); margin: 0 0 10px 0;}
+  p { color: #888; font-size: 14px; }
+}
+
+.fitting-layout {
+  display: flex; gap: 30px; max-width: 1200px; margin: 0 auto; flex-wrap: wrap;
+}
+
+// --- INVENTORY PANEL ---
+.inventory-panel {
+  flex: 1; min-width: 300px; background: $metal-panel; border: 1px solid $metal-border; 
+  border-top: 3px solid $neon-gold; padding: 20px; border-radius: 4px; box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+  h3 { color: $neon-gold; margin-top: 0; }
+}
+
+.item-list { display: flex; flex-direction: column; gap: 10px; }
+
+.gear-card {
+  display: flex; align-items: center; background: #0b0d10; border: 1px solid $metal-border;
+  padding: 15px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
+  
+  &:hover { border-color: $neon-cyan; background: #111418; box-shadow: inset 0 0 10px rgba($neon-cyan, 0.2); }
+  
+  .gear-icon { font-size: 24px; margin-right: 15px; background: #1a1e23; padding: 10px; border-radius: 4px; }
+  h4 { margin: 0 0 5px 0; font-family: sans-serif; font-size: 14px; }
+  .gear-price { color: $neon-gold; font-weight: bold; font-size: 12px; }
+}
+
+// --- 3D SZKENNER PANEL ---
+.scanner-panel {
+  flex: 2; min-width: 320px; height: 600px; background: #050608; border: 2px solid $metal-border;
+  position: relative; overflow: hidden; border-radius: 4px; box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+}
+
+.three-container { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+
+.scanner-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10;
+  
+  .corner-tl, .corner-tr, .corner-bl, .corner-br { position: absolute; width: 40px; height: 40px; border: 2px solid $neon-cyan; }
+  .corner-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+  .corner-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+  .corner-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+  .corner-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+  .scan-line {
+    width: 100%; height: 2px; background: rgba($neon-cyan, 0.5); box-shadow: 0 0 10px $neon-cyan;
+    position: absolute; animation: scan 4s linear infinite;
+  }
+}
+
+@keyframes scan { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+
+// --- ÉLŐ STATISZTIKA (A SIGNAL ADATAI) ---
+.avatar-stats-container {
+  position: absolute; bottom: 20px; right: 20px; z-index: 10;
+  background: rgba(#0a0c0f, 0.85); border: 1px solid $metal-border;
+  padding: 15px; border-radius: 4px; backdrop-filter: blur(5px);
+  width: 250px; display: flex; flex-direction: column; gap: 15px;
+}
+
+.status-row { font-weight: bold; font-size: 12px; color: #888; }
+.neon-green { color: $neon-green; text-shadow: 0 0 5px $neon-green; }
+.neon-cyan { color: $neon-cyan; text-shadow: 0 0 5px $neon-cyan; }
+
+.equipped-list { display: flex; flex-direction: column; gap: 8px; }
+
+.eq-slot {
+  display: flex; align-items: center; background: #000; padding: 6px 10px;
+  border-left: 2px solid $neon-cyan; font-size: 11px;
+  
+  .eq-label { color: #666; margin-right: 10px; }
+  .eq-value { font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px;}
+  
+  .unequip-btn {
+    background: none; border: none; color: $neon-red; cursor: pointer;
+    margin-left: auto; font-weight: bold; padding: 0 5px;
+    &:hover { text-shadow: 0 0 8px $neon-red; }
+  }
+}
+
+.mech-btn-save {
+  background: linear-gradient(180deg, #2c3239 0%, #16191d 100%);
+  border: 1px solid $metal-border; color: $neon-cyan; font-family: inherit; font-weight: bold;
+  font-size: 11px; padding: 10px; cursor: pointer; transition: all 0.2s; border-radius: 2px;
+  
+  &:hover { background: $neon-cyan; color: #000; box-shadow: 0 0 10px $neon-cyan; }
+}

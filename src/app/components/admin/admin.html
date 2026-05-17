@@ -149,16 +149,68 @@
     </div>
   }
 
-  @if (activeTab === 'shop') {
-    <div class="admin-page-content">
-      <div class="shop-management-placeholder">
-        <h3>🛠️ ARZENÁL GEAR SHOP GENERÁTOR</h3>
-        <p class="op-desc">Ezen a felületen tudsz majd új tárgyakat hozzáadni a bolthoz.</p>
-        <div class="gear-construction-box">
-          <span class="noise-text">⚠️ RENDSZER FEJLESZTÉS ALATT</span>
-          <p>A fogaskerekes "Gears" pontrendszer modulja csatlakozásra vár...</p>
+ @if (activeTab === 'shop') {
+    <div class="admin-split-layout">
+      
+      <div class="system-operations-panel shop-panel">
+        <h3>🛠️ ARZENÁL GEAR SZINTETIZÁTOR</h3>
+        <p class="op-desc">Tölts fel új ruhákat, maszkokat és kiegészítőket az Avatar boltba.</p>
+        
+        <form (ngSubmit)="onCreateShopItem()" class="event-form-grid">
+          <div class="form-group">
+            <label>Tárgy / Ruha Megnevezése</label>
+            <input type="text" name="name" [(ngModel)]="newShopItem.name" required class="rh-search-input" placeholder="pl. Neon Cyber-Goggles">
+          </div>
+
+          <div class="form-group-row">
+            <div class="form-group">
+              <label>Kategória</label>
+              <select name="category" [(ngModel)]="newShopItem.category" required class="rh-search-input custom-select">
+                <option value="headgear">🧢 Fej / Maszk / Szemüveg</option>
+                <option value="top">👕 Felsőruházat</option>
+                <option value="bottom">👖 Alsóruházat / Cipő</option>
+                <option value="accessory">🦾 Kiegészítő / Exo-kar</option>
+                <option value="background">🖼️ Profil Háttérkép</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Ár (Gears ⚙️)</label>
+              <input type="number" name="price" [(ngModel)]="newShopItem.price" required min="0" class="rh-search-input gear-input">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Kép URL (A ruha ikonja / képe)</label>
+            <input type="url" name="image_url" [(ngModel)]="newShopItem.image_url" class="rh-search-input" placeholder="https://...">
+          </div>
+
+          <div class="form-group">
+            <label>Tárgy Leírása (Lore)</label>
+            <textarea name="description" [(ngModel)]="newShopItem.description" rows="2" class="rh-search-input" placeholder="Növeli a techno-rezisztenciát..."></textarea>
+          </div>
+
+          <button type="submit" class="mech-btn-gold" [disabled]="isShopLoading">
+            {{ isShopLoading ? '⚙️ SZINTETIZÁLÁS FOLYAMATBAN...' : '🛠️ TÁRGY FELVÉTELE A BOLTBA' }}
+          </button>
+        </form>
+
+        @if (shopMessage) {
+          <div class="system-alert alert-gold">{{ shopMessage }}</div>
+        }
+      </div>
+
+      <div class="live-monitor-panel">
+        <h3>📦 RAKTÁRKÉSZLET // AKTÍV TÁRGYAK</h3>
+        <p class="op-desc">Ezeket a felszereléseket vehetik meg jelenleg a raverek.</p>
+        
+        <div class="monitor-list gear-grid">
+          <div class="monitor-empty">
+            <p class="text-gold">⚙️ A RAKTÁR JELENLEG ÜRES</p>
+            <span>Indítsd el a szintetizátort az első tárgyak feltöltéséhez.</span>
+          </div>
         </div>
       </div>
+
     </div>
   }
 

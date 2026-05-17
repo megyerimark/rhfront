@@ -1,0 +1,97 @@
+<div class="fitting-room-wrapper">
+  
+  <div class="room-header">
+    <h2>🧬 HOLOGRAFIKUS ÖLTÖZŐ</h2>
+    <div class="status-bar">
+      <span class="pulse-dot"></span> RENDSZER ÁLLAPOTA: <span class="neon-green">AKTÍV</span>
+    </div>
+  </div>
+
+  <div class="fitting-layout">
+    
+    <div class="inventory-panel">
+      <div class="panel-tag">STORAGE_V01</div>
+      <h3>⚙️ ELÉRHETŐ GEARS</h3>
+      
+      <div class="item-list">
+        
+        <div class="gear-card" (click)="equipMockItem('headgear', 'Neon Cyber-Goggles', 150)">
+          <div class="gear-icon">🕶️</div>
+          <div class="gear-info">
+            <h4>Neon Cyber-Goggles</h4>
+            <span class="gear-price">150 ⚙️</span>
+          </div>
+          <div class="gear-action-hint">CSATLAKOZTATÁS</div>
+        </div>
+
+        <div class="gear-card" (click)="equipMockItem('top', 'Kevlar Exo-Jacket', 300)">
+          <div class="gear-icon">🧥</div>
+          <div class="gear-info">
+            <h4>Kevlar Exo-Jacket</h4>
+            <span class="gear-price">300 ⚙️</span>
+          </div>
+          <div class="gear-action-hint">CSATLAKOZTATÁS</div>
+        </div>
+
+        <div class="gear-card" (click)="equipMockItem('bottom', 'Techwear Cargo', 220)">
+          <div class="gear-icon">👖</div>
+          <div class="gear-info">
+            <h4>Techwear Cargo</h4>
+            <span class="gear-price">220 ⚙️</span>
+          </div>
+          <div class="gear-action-hint">CSATLAKOZTATÁS</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="scanner-panel">
+      
+      <div class="scanner-overlay">
+        <div class="corner-tl"></div><div class="corner-tr"></div>
+        <div class="corner-bl"></div><div class="corner-br"></div>
+        <div class="scan-line"></div>
+      </div>
+      
+      <div #rendererContainer class="three-container"></div>
+      
+      <div class="avatar-stats-container">
+        <div class="stats-header">📡 ÉLŐ LOADOUT MONITOR</div>
+        
+        <div class="equipped-list">
+          
+          <div class="eq-slot" [class.empty]="!avatarService.equippedGear()['headgear']">
+            <span class="eq-label">FEJ:</span> 
+            <span class="eq-value">{{ avatarService.equippedGear()['headgear']?.name || '--- NINCS ---' }}</span>
+            @if (avatarService.equippedGear()['headgear']) {
+              <button class="unequip-btn" (click)="avatarService.unequip('headgear')">✖</button>
+            }
+          </div>
+
+          <div class="eq-slot" [class.empty]="!avatarService.equippedGear()['top']">
+            <span class="eq-label">TEST:</span> 
+            <span class="eq-value">{{ avatarService.equippedGear()['top']?.name || '--- NINCS ---' }}</span>
+            @if (avatarService.equippedGear()['top']) {
+              <button class="unequip-btn" (click)="avatarService.unequip('top')">✖</button>
+            }
+          </div>
+
+          <div class="eq-slot" [class.empty]="!avatarService.equippedGear()['bottom']">
+            <span class="eq-label">LÁB:</span> 
+            <span class="eq-value">{{ avatarService.equippedGear()['bottom']?.name || '--- NINCS ---' }}</span>
+            @if (avatarService.equippedGear()['bottom']) {
+              <button class="unequip-btn" (click)="avatarService.unequip('bottom')">✖</button>
+            }
+          </div>
+
+        </div>
+
+        <button class="mech-btn-save" (click)="avatarService.saveLoadout()">
+          ⚡ KONFIGURÁCIÓ MENTÉSE
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
